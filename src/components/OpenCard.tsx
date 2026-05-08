@@ -16,18 +16,21 @@ export default function OpenCard({ onYes }: { onYes: () => void }) {
 
     const btnW = 160;
     const btnH = 60;
-    const padding = 20;
-    const avoid = 160;
+    const padding = 30;
+    const avoidRadius = 180;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
 
     let top = 0;
     let left = 0;
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       const randTop =
-        padding + Math.random() * (window.innerHeight - btnH - padding * 2);
+        padding + Math.random() * (vh - btnH - padding * 2);
 
       const randLeft =
-        padding + Math.random() * (window.innerWidth - btnW - padding * 2);
+        padding + Math.random() * (vw - btnW - padding * 2);
 
       const yesX = yesRect.left + yesRect.width / 2;
       const yesY = yesRect.top + yesRect.height / 2;
@@ -37,7 +40,7 @@ export default function OpenCard({ onYes }: { onYes: () => void }) {
 
       const dist = Math.hypot(btnX - yesX, btnY - yesY);
 
-      if (dist > avoid) {
+      if (dist > avoidRadius) {
         top = randTop;
         left = randLeft;
         break;
@@ -53,6 +56,7 @@ export default function OpenCard({ onYes }: { onYes: () => void }) {
     audio.loop = true;
     audio.volume = 0.9;
     audio.play().catch(() => {});
+
     (window as any).__bgAudio = audio;
 
     onYes();
@@ -75,16 +79,13 @@ export default function OpenCard({ onYes }: { onYes: () => void }) {
           style={
             escaped
               ? {
+                  position: "fixed",
                   top: noPos.top,
                   left: noPos.left,
                 }
               : undefined
           }
           onClick={runAway}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            runAway();
-          }}
         >
           🚫 Нет
         </button>

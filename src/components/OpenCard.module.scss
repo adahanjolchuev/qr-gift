@@ -17,13 +17,8 @@
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 .title {
@@ -37,12 +32,14 @@
 .sub {
   font-family: "Courier New", monospace;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255,255,255,0.35);
 }
 
 .btns {
   display: flex;
   gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 /* YES */
@@ -58,14 +55,6 @@
 }
 
 /* NO */
-.btns {
-  display: flex;
-  gap: 1.2rem;
-  align-items: center;
-  justify-content: center;
-}
-
-/* обычное состояние (внутри flex) */
 .no {
   width: 160px;
   height: 60px;
@@ -77,20 +66,9 @@
 
   cursor: pointer;
   transition: transform 0.2s ease;
-
-  position: relative; /* 🔥 ВАЖНО: пока НЕ fixed */
 }
 
-/* когда убежала */
+/* escaped state */
 .noEscaped {
-  position: fixed;
-  transform: none;
-  z-index: 9999;
-  transition:
-    top 0.25s ease,
-    left 0.25s ease;
-}
-
-.noEscaped {
-  position: fixed;
+  transition: top 0.25s ease, left 0.25s ease;
 }

@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import styles from "./Intro.module.scss";
 import MatrixBackground from "./elements/Matrixbacground";
@@ -6,50 +7,54 @@ import MatrixBackground from "./elements/Matrixbacground";
 const WORDS = ["С", "ДНЁМ", "РОЖДЕНИЯ", "АИДА", "💗"];
 
 export default function Intro({ onNext }: { onNext: () => void }) {
-  const [count, setCount] = useState<number | null>(3);
+  const [count, setCount] = useState(3);
   const [showWords, setShowWords] = useState(false);
-  const [currentWord, setCurrentWord] = useState<number | null>(null);
+  const [currentWord, setCurrentWord] = useState(0);
   const [wordVisible, setWordVisible] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [done, setDone] = useState(false);
 
+  // ⏱ countdown
   useEffect(() => {
-    if (count === null) return;
     if (count === 0) {
       const t = setTimeout(() => {
-        setCount(null);
         setShowWords(true);
-      }, 1000);
+        setCount(-1);
+      }, 800);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(
-      () => setCount((c) => (c !== null ? c - 1 : null)),
-      1000
-    );
-    return () => clearTimeout(t);
+
+    if (count > 0) {
+      const t = setTimeout(() => setCount((c) => c - 1), 1000);
+      return () => clearTimeout(t);
+    }
   }, [count]);
 
+  // 💬 words flow
   useEffect(() => {
     if (!showWords) return;
-    if (currentWord === null) {
-      setCurrentWord(0);
-      return;
-    }
     if (currentWord >= WORDS.length) {
       const t = setTimeout(() => {
         setShowAll(true);
-        setTimeout(() => setDone(true), 1000);
-      }, 500);
+
+        setTimeout(() => {
+          setDone(true);
+        }, 800);
+      }, 300);
+
       return () => clearTimeout(t);
     }
+
     const showT = setTimeout(() => setWordVisible(true), 100);
+
     const hideT = setTimeout(() => {
       setWordVisible(false);
-      setTimeout(
-        () => setCurrentWord((w) => (w !== null ? w + 1 : 0)),
-        400
-      );
+
+      setTimeout(() => {
+        setCurrentWord((prev) => prev + 1);
+      }, 350);
     }, 900);
+
     return () => {
       clearTimeout(showT);
       clearTimeout(hideT);
@@ -64,7 +69,7 @@ export default function Intro({ onNext }: { onNext: () => void }) {
 
       <div className={styles.center}>
         {/* Countdown */}
-        {count !== null && (
+        {count > 0 && (
           <div key={count} className={styles.countdown}>
             <svg viewBox="0 0 120 120" className={styles.ring}>
               <circle cx="60" cy="60" r="52" className={styles.ringTrack} />
@@ -73,23 +78,27 @@ export default function Intro({ onNext }: { onNext: () => void }) {
                 cy="60"
                 r="52"
                 className={styles.ringFill}
-                style={{ strokeDashoffset: 326.7 * (1 - count / 3) }}
+                style={{
+                  strokeDashoffset: 326.7 * (1 - count / 3),
+                }}
               />
             </svg>
             <span className={styles.countNum}>{count}</span>
           </div>
         )}
 
-        {/* Одно слово по очереди */}
-        {showWords && !showAll && currentWord !== null && currentWord < WORDS.length && (
+        {/* words */}
+        {showWords && !showAll && currentWord < WORDS.length && (
           <div
-            className={`${styles.word} ${wordVisible ? styles.wordVisible : ""}`}
+            className={`${styles.word} ${
+              wordVisible ? styles.wordVisible : ""
+            }`}
           >
             {WORDS[currentWord]}
           </div>
         )}
 
-        {/* Все слова вместе */}
+        {/* all words */}
         {showAll && (
           <div className={styles.allWords}>
             {WORDS.map((word, i) => (
@@ -104,7 +113,7 @@ export default function Intro({ onNext }: { onNext: () => void }) {
           </div>
         )}
 
-        {/* Button */}
+        {/* button */}
         {done && (
           <button className={styles.btn} onClick={onNext}>
             Дальше ➜
