@@ -1,0 +1,44 @@
+.heartsLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heartItem {
+  position: absolute;
+  bottom: -40px;
+
+  opacity: 0.4;
+  will-change: transform, opacity;
+
+  animation-name: floatUp;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  /* мягкий glow */
+  text-shadow: 0 0 6px rgba(255, 180, 200, 0.4);
+}
+
+/* плавное движение */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translateY(-50vh) translateX(8px);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-100vh) translateX(-8px);
+    opacity: 0;
+  }
+}

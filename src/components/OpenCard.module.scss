@@ -1,0 +1,96 @@
+.screen {
+  height: 100vh;
+  width: 100vw;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.envelope {
+  font-size: 5rem;
+  animation: float 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.title {
+  font-family: "Courier New", monospace;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+}
+
+.sub {
+  font-family: "Courier New", monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.btns {
+  display: flex;
+  gap: 1.2rem;
+}
+
+/* YES */
+.yes {
+  width: 160px;
+  height: 60px;
+  border-radius: 999px;
+  background: #ff1493;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* NO */
+.btns {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* обычное состояние (внутри flex) */
+.no {
+  width: 160px;
+  height: 60px;
+  border-radius: 999px;
+
+  background: transparent;
+  border: 1.5px solid #ff1493;
+  color: #ff1493;
+
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  position: relative; /* 🔥 ВАЖНО: пока НЕ fixed */
+}
+
+/* когда убежала */
+.noEscaped {
+  position: fixed;
+  transform: none;
+  z-index: 9999;
+  transition:
+    top 0.25s ease,
+    left 0.25s ease;
+}
+
+.noEscaped {
+  position: fixed;
+}
