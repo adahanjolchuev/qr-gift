@@ -10,6 +10,7 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [started, setStarted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -17,6 +18,28 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
 
     video.loop = true;
     video.playsInline = true;
+
+    const handleLoaded = () => {
+      setLoading(false);
+    };
+
+    const handleWaiting = () => {
+      setLoading(true);
+    };
+
+    const handlePlaying = () => {
+      setLoading(false);
+    };
+
+    video.addEventListener("loadeddata", handleLoaded);
+    video.addEventListener("waiting", handleWaiting);
+    video.addEventListener("playing", handlePlaying);
+
+    return () => {
+      video.removeEventListener("loadeddata", handleLoaded);
+      video.removeEventListener("waiting", handleWaiting);
+      video.removeEventListener("playing", handlePlaying);
+    };
   }, []);
 
   const startVideo = async () => {
@@ -24,8 +47,11 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
     if (!video) return;
 
     try {
+      setLoading(true);
+
       video.muted = false;
       await video.play();
+
       setStarted(true);
       setIsPlaying(true);
     } catch (e) {
@@ -38,6 +64,7 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
     if (!video) return;
 
     if (video.paused) {
+      setLoading(true);
       await video.play();
       setIsPlaying(true);
     } else {
@@ -48,8 +75,9 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
 
   return (
     <section className={styles.section}>
-     <Stars/>
-     <Hearts/>
+      <Stars />
+      <Hearts />
+
       <div className={styles.videoWrap}>
         <div className={styles.videoFrame}>
           <video
@@ -57,10 +85,19 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
             src="/0423.mp4"
             className={styles.video}
             playsInline
+            preload="auto"
           />
 
+          {/* 🔥 LOADER */}
+          {loading && (
+            <div className={styles.loaderOverlay}>
+              <div className={styles.loader}></div>
+              <p>Загрузка видео...</p>
+            </div>
+          )}
+
           {/* 🔥 START OVERLAY */}
-          {!started && (
+          {!started && !loading && (
             <div className={styles.overlay} onClick={startVideo}>
               <div className={styles.playBtn}>▶ Play</div>
               <p>Tap to start</p>
@@ -68,7 +105,7 @@ export default function VideoSection({ onNext }: { onNext: () => void }) {
           )}
         </div>
 
-        {/* 🔥 CONTROLS (PAUSE + NEXT) */}
+        {/* 🔥 CONTROLS */}
         {started && (
           <div className={styles.controls}>
             <button className={styles.btn} onClick={togglePlay}>

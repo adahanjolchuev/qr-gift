@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Gallery.module.scss";
 
 const captions = [
@@ -34,6 +34,7 @@ const images = [
 
 export default function Gallery({ onNext }: { onNext: () => void }) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,16 +46,34 @@ export default function Gallery({ onNext }: { onNext: () => void }) {
           }
         });
       },
-      { threshold: 0.08 },
+      { threshold: 0.08 }
     );
+
     cardRefs.current.forEach((el) => {
       if (el) observer.observe(el);
     });
+
     return () => observer.disconnect();
   }, []);
 
   return (
     <section className={styles.gallery}>
+      {/* 🔥 FULLSCREEN IMAGE */}
+      {selectedImage && (
+        <div
+          className={styles.fullscreen}
+          onClick={() => setSelectedImage(null)}
+        >
+          <button className={styles.closeBtn}>✕</button>
+
+          <img
+            src={selectedImage}
+            alt="fullscreen"
+            className={styles.fullscreenImg}
+          />
+        </div>
+      )}
+
       {/* Aurora blobs */}
       <div className={styles.blob1} />
       <div className={styles.blob2} />
@@ -73,8 +92,11 @@ export default function Gallery({ onNext }: { onNext: () => void }) {
             </span>
           ))}
         </div>
+
         <h2 className={styles.title}>Фотки</h2>
+
         <p className={styles.subtitle}>Наши моменты</p>
+
         <div className={styles.divider}>
           <span className={styles.divLine} />
           <span className={styles.divDiamond} />
@@ -92,9 +114,12 @@ export default function Gallery({ onNext }: { onNext: () => void }) {
               cardRefs.current[i] = el;
             }}
             style={{ transitionDelay: `${(i % 6) * 70}ms` }}
+            onClick={() => setSelectedImage(img)}
           >
             <div className={styles.tape} />
+
             <img src={img} alt={`photo-${i}`} className={styles.photo} />
+
             <span className={styles.caption}>
               ♥ {captions[i % captions.length]} ♥
             </span>

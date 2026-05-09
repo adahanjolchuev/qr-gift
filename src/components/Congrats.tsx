@@ -1,13 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import styles from "./Congrats.module.scss";
 import dudu from "../../public/images/tenor.gif";
 
 export default function Congrats() {
+  const [explode, setExplode] = useState(false);
+
+  const handleExplosion = () => {
+    setExplode(true);
+
+    setTimeout(() => {
+      setExplode(false);
+    }, 1800);
+  };
+
   return (
     <section className={styles.section}>
-
       {/* Aurora blobs */}
       <div className={styles.blob1} />
       <div className={styles.blob2} />
@@ -31,9 +41,29 @@ export default function Congrats() {
         ))}
       </div>
 
+      {/* 💥 HEART EXPLOSION */}
+      {explode && (
+        <div className={styles.explosion}>
+          {Array.from({ length: 32 }).map((_, i) => (
+            <span
+              key={i}
+              className={styles.explodeHeart}
+              style={
+                {
+                  "--x": `${Math.random() * 700 - 350}px`,
+                  "--y": `${Math.random() * -700}px`,
+                  "--rotate": `${Math.random() * 360}deg`,
+                } as React.CSSProperties
+              }
+            >
+              ♥
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Card */}
       <div className={styles.card}>
-
         {/* Top ornament */}
         <div className={styles.topOrnament}>
           <span className={styles.ornLine} />
@@ -56,7 +86,7 @@ export default function Congrats() {
         <div className={styles.sealRow}>
           <div className={styles.seal}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
           </div>
         </div>
@@ -69,15 +99,17 @@ export default function Congrats() {
 
         <p className={styles.text}>
           Сегодня особенный день — день, когда появилась ты.
-          <br /><br />
+          <br />
+          <br />
           Ты делаешь мою жизнь теплее, ярче и счастливее просто тем, что
           существуешь. Каждый момент рядом с тобой — это подарок, который я не
           заслужил, но очень берегу.
-          <br /><br />
+          <br />
+          <br />
           Желаю тебе всего, чего ты сама себе желаешь в этот день. Пусть этот
           год будет самым лёгким, самым нежным и самым счастливым в твоей жизни.
-          <br /><br />
-          Я люблю тебя. Сегодня, завтра и всегда.
+          <br />
+          <br />Я люблю тебя. Сегодня, завтра и всегда.
         </p>
 
         <div className={styles.divider}>
@@ -92,6 +124,11 @@ export default function Congrats() {
           <Image src={dudu} alt="Kiss" width={200} height={200} />
         </div>
 
+        {/* 💖 BUTTON */}
+        <button className={styles.loveBtn} onClick={handleExplosion}>
+          ♥ Обнять тебя
+        </button>
+
         {/* Bottom ornament */}
         <div className={styles.bottomOrnament}>
           <span className={styles.ornLine} />
@@ -100,7 +137,6 @@ export default function Congrats() {
           <span className={styles.ornDiamond} />
           <span className={styles.ornLine} />
         </div>
-
       </div>
     </section>
   );

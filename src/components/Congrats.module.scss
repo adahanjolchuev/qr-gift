@@ -42,7 +42,11 @@
   position: absolute;
   width: 280px;
   height: 280px;
-  background: radial-gradient(circle, rgba(220, 30, 100, 0.12), transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(220, 30, 100, 0.12),
+    transparent 70%
+  );
   border-radius: 50%;
   filter: blur(70px);
   top: 50%;
@@ -327,5 +331,86 @@
   .gifWrap {
     width: 160px;
     height: 160px;
+  }
+}
+/* 💖 LOVE BUTTON */
+.loveBtn {
+  margin-top: 28px;
+  padding: 14px 32px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255, 77, 136, 0.35);
+
+  background: rgba(255, 77, 136, 0.08);
+
+  color: #ffd3e3;
+
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition: all 0.35s ease;
+
+  box-shadow: 0 0 20px rgba(255, 77, 136, 0.12);
+
+  &:hover {
+    transform: translateY(-4px) scale(1.04);
+
+    background: rgba(255, 77, 136, 0.18);
+
+    border-color: rgba(255, 77, 136, 0.7);
+
+    box-shadow:
+      0 0 30px rgba(255, 77, 136, 0.35),
+      0 0 70px rgba(255, 77, 136, 0.18);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+/* 💥 HEART EXPLOSION */
+.explosion {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explodeHeart {
+  position: absolute;
+
+  color: #ff4d88;
+
+  font-size: 26px;
+
+  animation: explode 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+  text-shadow:
+    0 0 20px rgba(255, 77, 136, 0.8),
+    0 0 40px rgba(255, 77, 136, 0.4);
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.5);
+
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--x), var(--y)) rotate(var(--rotate)) scale(2);
+
+    opacity: 0;
   }
 }
