@@ -58,6 +58,7 @@ export default function OurStory({ onNext }: Props) {
   const [hearts, setHearts] = useState<Heart[]>([]);
 
   // Stars бир гана жолу render болот
+  
   const starsBg = useMemo(() => <Stars />, []);
 
   // ─── Scroll animation ───

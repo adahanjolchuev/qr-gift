@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Intro.module.scss";
 import MatrixBackground from "./elements/Matrixbacground";
+import confetti from "canvas-confetti";
 
 const WORDS = ["С", "ДНЁМ", "РОЖДЕНИЯ", "АИДА", "💗"];
 
@@ -29,6 +30,36 @@ export default function Intro({ onNext }: { onNext: () => void }) {
       return () => clearTimeout(t);
     }
   }, [count]);
+
+  // 🎉 confetti when birthday text appears
+  useEffect(() => {
+    if (!showAll) return;
+
+    const end = Date.now() + 2200;
+
+    const colors = ["#ff1493", "#ff69b4", "#ff4dff", "#ffffff", "#ff0077"];
+
+    const frame = () => {
+      confetti({
+        particleCount: 6,
+        angle: 60,
+        spread: 70,
+        origin: { x: 0, y: 0.6 },
+        colors,
+      });
+      confetti({
+        particleCount: 6,
+        angle: 120,
+        spread: 70,
+        origin: { x: 1, y: 0.6 },
+        colors,
+      });
+
+      if (Date.now() < end) requestAnimationFrame(frame);
+    };
+
+    frame();
+  }, [showAll]);
 
   // 💬 words flow
   useEffect(() => {

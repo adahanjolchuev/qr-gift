@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef, useCallback } from "react";
 import OpenCard from "@/components/OpenCard";
 import Intro from "@/components/Intro";

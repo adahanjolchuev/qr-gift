@@ -1,15 +1,46 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Congrats.module.scss";
 import dudu from "../../public/images/tenor.gif";
+import confetti from "canvas-confetti";
+
+// Биринчи жолугушкан күн
+const START_DATE = new Date("2023-08-07");
+
+function getDaysTogether() {
+  const today = new Date();
+  const diff = today.getTime() - START_DATE.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
 
 export default function Congrats() {
   const [explode, setExplode] = useState(false);
+  const [days] = useState(getDaysTogether);
+
+  // 🎉 confetti on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.5 },
+        colors: ["#ff1493", "#ff69b4", "#ffffff", "#ff4dff", "#ff0077"],
+      });
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleExplosion = () => {
     setExplode(true);
+
+    confetti({
+      particleCount: 150,
+      spread: 120,
+      origin: { y: 0.6 },
+      colors: ["#ff1493", "#ff69b4", "#ffffff", "#ff4dff", "#ffaacc"],
+    });
 
     setTimeout(() => {
       setExplode(false);
@@ -82,6 +113,12 @@ export default function Congrats() {
         <p className={styles.date}>— с днём рождения —</p>
 
         <h1 className={styles.name}>Моя любимая</h1>
+
+        {/* 💕 Күн санагыч */}
+        <div className={styles.daysCounter}>
+          <span className={styles.daysNum}>{days}</span>
+          <span className={styles.daysLabel}>дней вместе</span>
+        </div>
 
         <div className={styles.sealRow}>
           <div className={styles.seal}>
